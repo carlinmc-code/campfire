@@ -1,0 +1,4 @@
+# campfire.raisedcurious.com — test environment
+# Not for indexing. Remove this file when promoting to production.
+User-agent: *
+Disallow: /

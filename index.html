@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campfire — Conversation Cards for Families | RaisedCurious</title>
+<meta name="description" content="A free conversation card deck for families. 265 questions and dares across five levels, from easy warm-ups to the ones adults avoid. No signup, no cost.">
+<meta property="og:title" content="Campfire — Conversation Cards for Families">
+<meta property="og:description" content="265 questions and dares across five levels. Set the age of your youngest player and start drawing.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://campfire.raisedcurious.com/">
+<link rel="canonical" href="https://campfire.raisedcurious.com/">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#2A5741">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#2A5741; --forest-light:#3D7A58; --forest-deep:#1F4230; --sage:#7BA685; --mist:#C8DDD0;
+  --terra:#B8622A; --gold:#C49A2A;
+  --ink:#1E1C18; --warm-gray:#7A7060;
+  --paper:#F8F4ED; --linen:#EDE5D8; --light-border:#E4D9C8;
+  --card-face:#FFFCF6;
+  --shadow:0 1px 2px rgba(30,28,24,.04),0 12px 32px -12px rgba(30,28,24,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:'Lato',system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--forest)}
+.wrap{max-width:960px;margin:0 auto;padding:0 24px}
+
+/* NAV */
+.nav{background:var(--forest);color:var(--paper)}
+.nav-in{max-width:960px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--paper)}
+.brand svg{width:24px;height:24px;flex:none}
+.brand-word{font-family:Georgia,serif;font-size:19px;letter-spacing:.01em}
+.brand-word b{font-weight:700}
+.brand-word i{font-style:italic;font-weight:400;color:var(--mist)}
+.nav-links{display:flex;gap:22px;list-style:none;margin:0;padding:0}
+.nav-links a{color:var(--mist);text-decoration:none;font-size:14px;letter-spacing:.02em}
+.nav-links a:hover{color:var(--paper)}
+@media(max-width:700px){.nav-links{display:none}}
+
+/* HERO */
+.hero{padding:56px 0 8px;text-align:center}
+.eyebrow{font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);margin:0 0 14px}
+h1{font-family:Georgia,serif;font-size:clamp(44px,9vw,68px);line-height:1;margin:0 0 14px;font-weight:700;letter-spacing:-.01em}
+.lede{max-width:46ch;margin:0 auto;color:var(--warm-gray);font-size:17px}
+
+/* CONTROLS */
+.controls{margin:36px auto 0;max-width:680px}
+.ctl-row+.ctl-row{margin-top:18px}
+.ctl-label{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--warm-gray);display:block;margin-bottom:8px;text-align:center}
+.seg{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.seg button{font-family:'Lato',sans-serif;font-size:14px;background:transparent;color:var(--warm-gray);border:1px solid var(--light-border);border-radius:2px;padding:7px 15px;cursor:pointer;transition:all .15s ease;line-height:1.2}
+.seg button:hover{border-color:var(--sage);color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--forest);border-color:var(--forest);color:var(--paper);font-weight:700}
+.seg button.lvl[aria-pressed="true"]{background:var(--c);border-color:var(--c)}
+.seg button:disabled{opacity:.4;cursor:not-allowed;border-style:dashed}
+.seg button:disabled:hover{border-color:var(--light-border);color:var(--warm-gray)}
+.seg button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+.adult-note{display:none;margin:16px auto 0;max-width:560px;text-align:center;font-family:'Courier Prime',monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--terra)}
+.adult-note.on{display:block}
+
+/* CARD */
+.stage{position:relative;margin:40px auto 0;max-width:560px;padding:0 8px}
+.stage::before{content:"";position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);width:120%;height:120%;pointer-events:none;z-index:0;background:radial-gradient(ellipse at center,rgba(196,154,42,.13),rgba(196,154,42,0) 62%)}
+.deck{position:relative;z-index:1}
+.deck::before,.deck::after{content:"";position:absolute;inset:0;border-radius:6px;background:var(--card-face);border:1px solid var(--light-border);z-index:-1}
+.deck::before{transform:translate(5px,7px) rotate(.5deg);opacity:.75}
+.deck::after{transform:translate(10px,14px) rotate(1.1deg);opacity:.45}
+.deck.empty::before,.deck.empty::after{display:none}
+
+.card{position:relative;background:var(--card-face);border:1px solid var(--light-border);border-radius:6px;box-shadow:var(--shadow);min-height:330px;display:flex;flex-direction:column;padding:26px 30px 20px;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:var(--c,var(--gold))}
+.card-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.card-lvl{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--c,var(--gold));font-weight:700}
+.card-age{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.1em;color:var(--warm-gray)}
+.card-q{font-family:Georgia,serif;font-size:clamp(22px,4.6vw,29px);line-height:1.34;margin:26px 0;font-weight:400;text-wrap:balance}
+.card-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:auto;font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.1em;color:var(--warm-gray)}
+.card-tools{display:flex;gap:6px}
+.tool{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:transparent;border:1px solid var(--light-border);color:var(--warm-gray);border-radius:2px;padding:5px 10px;cursor:pointer;transition:all .15s ease}
+.tool:hover{border-color:var(--sage);color:var(--ink)}
+.tool[aria-pressed="true"]{border-color:var(--gold);color:var(--gold);font-weight:700}
+.tool:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.card.idle .card-tools,.card.done .card-tools{visibility:hidden}
+
+.card.embers{background:var(--forest-deep);border-color:var(--forest-deep)}
+.card.embers .card-q{color:var(--paper)}
+.card.embers .card-age,.card.embers .card-foot{color:var(--mist)}
+.card.embers .tool{border-color:rgba(248,244,237,.25);color:var(--mist)}
+.card.embers .tool:hover{border-color:var(--mist);color:var(--paper)}
+.deck.embers::before,.deck.embers::after{background:var(--forest-deep);border-color:var(--forest-deep)}
+
+.card.dare{background:var(--ink);border-color:var(--ink)}
+.card.dare .card-q{color:var(--paper)}
+.card.dare .card-age,.card.dare .card-foot{color:var(--sage)}
+.card.dare .tool{border-color:rgba(248,244,237,.25);color:var(--sage)}
+.card.dare .tool:hover{border-color:var(--mist);color:var(--paper)}
+.deck.dare::before,.deck.dare::after{background:var(--ink);border-color:var(--ink)}
+
+.card.idle .card-q,.card.done .card-q{color:var(--warm-gray);font-style:italic}
+@keyframes deal{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+.card.dealt{animation:deal .28s cubic-bezier(.2,.7,.3,1)}
+@media(prefers-reduced-motion:reduce){.card.dealt{animation:none}*{transition:none!important}}
+
+/* PROGRESS */
+.embers-bar{height:2px;background:var(--linen);margin:22px 0 0;border-radius:2px;overflow:hidden;position:relative;z-index:1}
+.embers-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--terra));transition:width .35s ease}
+.meta{display:flex;justify-content:space-between;gap:12px;font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--warm-gray);margin-top:10px;position:relative;z-index:1}
+
+.actions{display:flex;gap:10px;justify-content:center;margin:26px 0 0;flex-wrap:wrap;position:relative;z-index:1}
+.btn{font-family:'Lato',sans-serif;font-size:15px;font-weight:700;letter-spacing:.02em;padding:13px 30px;border-radius:2px;cursor:pointer;border:1px solid var(--forest);background:var(--forest);color:var(--paper);transition:background .15s ease}
+.btn:hover{background:var(--forest-light);border-color:var(--forest-light)}
+.btn.ghost{background:transparent;color:var(--forest)}
+.btn.ghost:hover{background:var(--mist);border-color:var(--forest)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+.library{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;margin:20px 0 0;position:relative;z-index:1;font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--warm-gray)}
+.library button{font:inherit;background:transparent;border:none;border-bottom:1px solid var(--light-border);color:var(--warm-gray);cursor:pointer;padding:2px 0}
+.library button:hover:not(:disabled){color:var(--terra);border-color:var(--terra)}
+.library button:disabled{opacity:.35;cursor:not-allowed}
+.library button[aria-pressed="true"]{color:var(--gold);border-color:var(--gold);font-weight:700}
+.library .sep{opacity:.4}
+.hint{text-align:center;font-size:13px;color:var(--warm-gray);margin:16px 0 0}
+.hint kbd{font-family:'Courier Prime',monospace;background:var(--linen);border:1px solid var(--light-border);border-radius:2px;padding:1px 6px;font-size:12px}
+@media(max-width:640px){.hint{display:none}}
+
+/* RULES */
+.rules{margin:84px 0 0;border-top:1px solid var(--light-border);padding-top:44px}
+.rules h2{font-family:Georgia,serif;font-size:28px;margin:0 0 8px;font-weight:700}
+.rules .sub{color:var(--warm-gray);margin:0 0 30px;max-width:58ch}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:26px;list-style:none;padding:0;margin:0;counter-reset:s}
+.steps li{counter-increment:s}
+.steps li::before{content:counter(s,decimal-leading-zero);display:block;font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:.14em;color:var(--terra);margin-bottom:8px}
+.steps strong{display:block;font-family:Georgia,serif;font-size:18px;font-weight:700;margin-bottom:5px}
+.steps p{margin:0;font-size:15px;color:var(--warm-gray)}
+.levels{margin-top:44px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.lvl-card{border-left:3px solid var(--c);padding:2px 0 2px 16px}
+.lvl-card h3{font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--c);margin:0 0 6px}
+.lvl-card .count{font-family:'Courier Prime',monospace;font-size:11px;color:var(--warm-gray);display:block;margin-bottom:4px}
+.lvl-card p{margin:0;font-size:15px;color:var(--warm-gray)}
+.thesis{margin:52px 0 0;border-top:1px solid var(--light-border);padding-top:36px;max-width:62ch}
+.thesis h2{font-family:Georgia,serif;font-size:23px;font-weight:700;margin:0 0 14px;line-height:1.3}
+.thesis p{margin:0 0 14px;color:var(--warm-gray)}
+.thesis p:last-child{margin-bottom:0}
+.note{margin:44px 0 0;background:var(--linen);border-left:3px solid var(--gold);padding:18px 22px;font-size:15px}
+.note strong{font-family:Georgia,serif}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--linen);margin-top:88px;padding:44px 0}
+footer .wrap{display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap;align-items:flex-start}
+footer a{color:var(--mist);text-decoration:none;font-size:14px}
+footer a:hover{color:var(--paper)}
+.f-links{display:flex;gap:20px;flex-wrap:wrap}
+.f-note{font-size:13px;color:var(--warm-gray);max-width:34ch}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="https://raisedcurious.com/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+        <path d="M12 21V9"/><path d="M12 12C12 8 9 6 5 6c0 4 3 6 7 6z"/><path d="M12 10c0-3.5 2.6-5.5 6-5.5 0 3.5-2.6 5.5-6 5.5z"/>
+      </svg>
+      <span class="brand-word"><b>Raised</b><i>Curious</i></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="https://raisedcurious.com/experiments/">Experiments</a></li>
+      <li><a href="https://raisedcurious.com/weekend/">Weekend</a></li>
+      <li><a href="https://raisedcurious.com/games/">Games</a></li>
+      <li><a href="https://raisedcurious.com/outside/">Outside</a></li>
+      <li><a href="https://raisedcurious.com/printables/">Printables</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Conversation deck</p>
+    <h1>Campfire</h1>
+    <p class="lede">Questions for families who want to talk about something other than what happened at school today. Including the ones the grown-ups need to ask each other.</p>
+  </header>
+
+  <div class="controls">
+    <div class="ctl-row">
+      <span class="ctl-label" id="age-label">Youngest player</span>
+      <div class="seg" id="ages" role="group" aria-labelledby="age-label"></div>
+    </div>
+    <div class="ctl-row">
+      <span class="ctl-label" id="lvl-label">Levels in play</span>
+      <div class="seg" id="levels" role="group" aria-labelledby="lvl-label"></div>
+    </div>
+  </div>
+
+  <p class="adult-note" id="adult-note">Embers is written for grown-ups. Not explicit, just honest.</p>
+
+  <section class="stage">
+    <div class="deck" id="deck">
+      <article class="card idle" id="card" aria-live="polite">
+        <div class="card-head">
+          <span class="card-lvl" id="c-lvl">Ready</span>
+          <span class="card-age" id="c-age"></span>
+        </div>
+        <p class="card-q" id="c-q">Pick who is playing, then draw your first card.</p>
+        <div class="card-foot">
+          <span id="c-foot"></span>
+          <span class="card-tools">
+            <button class="tool" id="t-save" aria-pressed="false">Save</button>
+            <button class="tool" id="t-retire">Retire</button>
+          </span>
+        </div>
+      </article>
+    </div>
+
+    <div class="embers-bar"><span id="bar"></span></div>
+    <div class="meta">
+      <span id="m-left">— cards left</span>
+      <span id="m-drawn">0 drawn</span>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="draw">Draw a card</button>
+      <button class="btn ghost" id="shuffle">Reshuffle</button>
+    </div>
+
+    <div class="library">
+      <button id="fav-only" aria-pressed="false" disabled>Saved (0)</button>
+      <span class="sep">·</span>
+      <span id="seen-stat">0 of 0 seen</span>
+      <span class="sep">·</span>
+      <button id="forget" disabled>Forget everything</button>
+    </div>
+
+    <p class="hint">Press <kbd>space</kbd> to draw</p>
+  </section>
+
+  <section class="rules">
+    <h2>How to play</h2>
+    <p class="sub">There is no winner and no scoring. The only rule that matters is that whoever draws the card answers it first, and everyone else gets a turn after.</p>
+
+    <ol class="steps">
+      <li><strong>Set the floor</strong><p>Choose the age of your youngest player. Cards above that age stay in the box.</p></li>
+      <li><strong>Draw and answer</strong><p>Read it out loud. The person who drew it answers first, then anyone who wants to.</p></li>
+      <li><strong>Pass is allowed</strong><p>Anyone can skip a card, including the grown-ups. Passing without a reason is fine.</p></li>
+      <li><strong>Go up a level</strong><p>Start on Spark. Move to Kindling when the table warms up. Bonfire when you mean it.</p></li>
+    </ol>
+
+    <div class="levels" id="lvl-legend"></div>
+
+    <section class="thesis">
+      <h2>Why there is an adults-only level on a kids site</h2>
+      <p>Curiosity is not a worksheet. Kids learn how to be honest by watching two adults be honest with each other, and most households run for years without either parent asking the other anything that has not already been answered. The bond between the grown-ups is the room every other conversation happens in.</p>
+      <p>So Embers is not a bonus deck bolted onto the side. It is the same project pointed one level up. Build the habit at your end of the table and the kids will already know how it is done by the time you hand them a Bonfire card.</p>
+    </section>
+
+    <div class="note"><strong>A note for parents.</strong> Bonfire cards can open things up faster than you expect. Answer them yourself before you ask a kid to. A question you would not answer is not a question you should draw. Embers only appears once you set the table to Adults, and you have to switch it on yourself.</div>
+
+    <div class="note" style="border-color:var(--sage)"><strong>What this remembers.</strong> Cards you have already drawn, cards you saved, and cards you retired are stored on this device only. Nothing is sent anywhere, there is no account, and clearing your browser data clears it. Use <em>Forget everything</em> to reset it yourself.</div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="brand" href="https://raisedcurious.com/" style="color:var(--paper)">
+        <span class="brand-word"><b>Raised</b><i>Curious</i></span>
+      </a>
+      <p class="f-note">Science, play, and wonder for families. Always free.</p>
+    </div>
+    <div class="f-links">
+      <a href="https://raisedcurious.com/games/">Games</a>
+      <a href="https://raisedcurious.com/printables/">Printables</a>
+      <a href="https://raisedcurious.com/about/">About</a>
+      <a href="https://raisedcurious.com/legal/">Legal</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   CAMPFIRE — RaisedCurious
+   Base deck is embedded below and always ships with the page.
+   data/campfire-cards.json is optional. The nightly generator
+   appends to it. If it is missing, empty, or malformed, the
+   page runs on the base deck with no visible difference.
+   ═══════════════════════════════════════════════════════════ */
+
+const DECK = {
+  spark: { name:"Spark", color:"#C49A2A", cards:[
+    {min:4, q:"What is the best snack in this house, and who is wrong about it?"},
+    {min:4, q:"If you could be any animal for one day, which one, and what is the first thing you would do?"},
+    {min:4, q:"What is a sound you love?"},
+    {min:4, q:"If today had a color, what color was it?"},
+    {min:4, q:"What is something you are good at that nobody here has noticed yet?"},
+    {min:4, q:"If our family had a flag, what would be on it?"},
+    {min:4, q:"What is the funniest thing that happened this week?"},
+    {min:4, q:"What would you eat for every single meal if you were allowed?"},
+    {min:4, q:"What is your favorite thing about your room?"},
+    {min:4, q:"If you got to rename yourself tomorrow, what would you pick?"},
+    {min:4, q:"What is your favorite thing we do together?"},
+    {min:4, q:"What is the best thing you built or made recently?"},
+    {min:4, q:"If you could have a superpower but only on Tuesdays, what would it be?"},
+    {min:4, q:"What is the silliest thing you have ever been really serious about?"},
+    {min:4, q:"If this house had a secret room, what would you put in it?"},
+    {min:4, q:"What is the best hiding spot in this house?"},
+    {min:4, q:"What animal do you think you are most like?"},
+    {min:4, q:"If you could make one food disappear from the planet forever, which one?"},
+    {min:4, q:"What is a word you love the sound of?"},
+    {min:4, q:"If you could only wear one outfit for a whole year, what is it?"},
+    {min:4, q:"What is the best thing about being a kid that grown-ups forget?"},
+    {min:4, q:"If you had a pet dragon, what would you name it and where would it sleep?"},
+    {min:4, q:"What do you like to do when nobody is telling you what to do?"},
+    {min:4, q:"What is the best drawing you have ever made?"},
+    {min:4, q:"You pick dinner every night this week. What is the menu?"},
+    {min:4, q:"What always makes you laugh, even when you do not want to?"},
+    {min:4, q:"What is the coolest thing you have ever found outside?"},
+    {min:4, q:"If you could stay up as late as you wanted, what would you actually do?"},
+    {min:7, q:"What is one rule in this house you would change, and what would you replace it with?"},
+    {min:7, q:"What is the best day you can remember?"},
+    {min:7, q:"What is something you used to be scared of and are not anymore?"},
+    {min:7, q:"If you had to teach a class tomorrow, what would you teach?"},
+    {min:7, q:"What is the weirdest thing you know how to do?"},
+    {min:7, q:"Who makes you laugh the hardest, and what do they do?"},
+    {min:7, q:"What is something small that makes a whole day better?"},
+    {min:7, q:"You find a hundred dollars on the sidewalk. What happens next?"},
+    {min:7, q:"What is a smell that takes you somewhere else?"},
+    {min:7, q:"What is the last thing that genuinely surprised you?"},
+    {min:7, q:"If you could invent one thing that does not exist yet, what would it do?"},
+    {min:7, q:"What is the best trip we have ever taken, and what made it the best?"},
+    {min:7, q:"What would you put in a time capsule for someone to open in fifty years?"},
+    {min:7, q:"What is a talent you wish you had?"},
+    {min:7, q:"If you had to be famous for something, what would you want it to be?"},
+    {min:7, q:"What is the best meal anyone here makes?"},
+    {min:7, q:"What is something you own that you would never give away?"},
+    {min:7, q:"If you could swap lives with anyone for one day, who and why?"},
+    {min:7, q:"What is a game you could play for hours without getting bored?"},
+    {min:7, q:"What is the strangest dream you actually remember?"},
+    {min:10, q:"What is something you believed as a little kid that turned out to be completely wrong?"},
+    {min:10, q:"What is the best gift you have ever gotten, and why that one?"},
+    {min:10, q:"If you could freeze one day and live in it forever, which day?"},
+    {min:10, q:"What is a job you would be genuinely terrible at?"},
+    {min:10, q:"What is something everyone else seems to love that you just do not get?"},
+    {min:10, q:"What is a skill you want to have by this time next year?"},
+    {min:10, q:"What is the most useless thing you know a lot about?"},
+    {min:10, q:"You have to give a five minute speech right now with no preparation. What is the topic?"},
+    {min:10, q:"What was popular last year that already feels ridiculous?"},
+    {min:10, q:"What would your perfect Saturday look like, hour by hour?"},
+    {min:10, q:"What are you weirdly picky about?"},
+    {min:10, q:"If you could delete one chore from existence, which one, and what would you do with the time?"}
+  ]},
+
+  kindling: { name:"Kindling", color:"#B8622A", cards:[
+    {min:7, q:"What is something you wish I asked you about more often?"},
+    {min:7, q:"When was the last time you felt really proud of yourself?"},
+    {min:7, q:"What is the hardest part of being your age?"},
+    {min:7, q:"What do you think I worry about?"},
+    {min:7, q:"What is a mistake you made that turned out okay in the end?"},
+    {min:7, q:"What is the kindest thing anyone has ever done for you?"},
+    {min:7, q:"What are you looking forward to that is still a long way off?"},
+    {min:7, q:"What have you been working on that nobody has noticed?"},
+    {min:7, q:"Who at school do you wish you knew better?"},
+    {min:7, q:"What do you find easy that other people seem to find hard?"},
+    {min:7, q:"What makes a day a good day for you?"},
+    {min:7, q:"What is something you wish you were allowed to do?"},
+    {min:7, q:"When do you feel the most nervous?"},
+    {min:7, q:"What is a promise someone made to you that they kept?"},
+    {min:7, q:"What is the nicest thing you have ever done for someone else?"},
+    {min:7, q:"What are you curious about that you have never looked up?"},
+    {min:7, q:"What do you do when you feel bad and nobody is around?"},
+    {min:7, q:"Who is the easiest person in this family to talk to, and why them?"},
+    {min:7, q:"What have you been wanting to ask for but have not?"},
+    {min:7, q:"What do you think you will remember about this year?"},
+    {min:10, q:"What is something you are better at than me?"},
+    {min:10, q:"When do you feel most like yourself?"},
+    {min:10, q:"What have you changed your mind about this year?"},
+    {min:10, q:"What is a compliment you got that you still think about?"},
+    {min:10, q:"What do you think this family is actually good at?"},
+    {min:10, q:"What would you like to be brave enough to try?"},
+    {min:10, q:"Who do you want to be more like, and what specifically about them?"},
+    {min:10, q:"What do you do that you learned by watching me?"},
+    {min:10, q:"What is a question you have wanted to ask me but have not?"},
+    {min:10, q:"When did you last feel left out?"},
+    {min:10, q:"What is a story about our family you have heard so many times you could tell it yourself?"},
+    {min:10, q:"What do you want to be remembered for at school?"},
+    {min:10, q:"What is the best advice you have ever gotten, and did you take it?"},
+    {min:10, q:"What is the hardest thing about being honest?"},
+    {min:10, q:"What is one thing I do that helps, and one thing I do that does not?"},
+    {min:10, q:"What have you quit that you do not regret quitting?"},
+    {min:10, q:"What is a friendship that changed, and do you know why it changed?"},
+    {min:10, q:"What do you think people expect from you?"},
+    {min:10, q:"What do you say yes to that you would rather say no to?"},
+    {min:10, q:"When have you stood up for someone?"},
+    {min:10, q:"When did you not stand up for someone, and wish you had?"},
+    {min:10, q:"What about you has changed since last year?"},
+    {min:10, q:"What do you think is unfair that most people just accept?"},
+    {min:10, q:"What do you own that means more than it looks like it should?"},
+    {min:10, q:"What do you do when you disagree with a friend?"},
+    {min:10, q:"What have you taught yourself?"},
+    {min:10, q:"Who do you think knows you best, and are they right?"},
+    {min:10, q:"What is a moment you would relive exactly as it happened?"},
+    {min:12, q:"What is something about growing up that nobody explains well?"},
+    {min:12, q:"What do you think you will be like at thirty?"},
+    {min:12, q:"What is a rule you follow even when nobody is checking, and why that one?"},
+    {min:12, q:"What do you pretend to like?"},
+    {min:12, q:"Where do you feel most calm?"},
+    {min:12, q:"What do you think our family avoids talking about?"},
+    {min:12, q:"What is a belief you hold that most people your age do not?"},
+    {min:12, q:"What do adults get wrong about your generation?"},
+    {min:12, q:"What have you said that you wish you could take back?"},
+    {min:12, q:"What is a version of your future that scares you a little?"},
+    {min:12, q:"What do you know you should stop doing?"},
+    {min:12, q:"What are you supposed to want but do not?"}
+  ]},
+
+  bonfire: { name:"Bonfire", color:"#2A5741", cards:[
+    {min:10, q:"What have you never told me because you thought I would be upset?"},
+    {min:10, q:"When have you felt most alone?"},
+    {min:10, q:"What do you need from me that you are not getting?"},
+    {min:10, q:"What happened a while ago that you are still thinking about?"},
+    {min:10, q:"When did you last feel truly understood, and by who?"},
+    {min:10, q:"What is the thing you most want to get right in your life?"},
+    {min:10, q:"What is one thing about this family you would keep forever, and one thing you would change?"},
+    {min:10, q:"What do you want me to know about you that I might have wrong?"},
+    {min:10, q:"What do you hope is true about you in ten years?"},
+    {min:10, q:"If this were the last conversation we ever had, what would you want to say?"},
+    {min:10, q:"What are you afraid to be bad at?"},
+    {min:10, q:"When have you felt embarrassed to be yourself?"},
+    {min:10, q:"What is a hurt you have not told anyone about?"},
+    {min:10, q:"What do you think would happen if you told the truth about that thing?"},
+    {min:10, q:"What do you wish people knew before they judged you?"},
+    {min:10, q:"What have you been pretending is fine?"},
+    {min:10, q:"When do you feel like you have to perform instead of just being there?"},
+    {min:10, q:"What is the loneliest place you go?"},
+    {min:10, q:"What would you want someone to say to you on your worst day?"},
+    {min:10, q:"What do you think I do not understand about your life?"},
+    {min:12, q:"What is a fear you carry that you do not talk about?"},
+    {min:12, q:"What have you forgiven yourself for?"},
+    {min:12, q:"When did you start seeing me as a person and not just a parent?"},
+    {min:12, q:"What would you want said about you if you were not in the room?"},
+    {min:12, q:"What do you think is the hardest thing I have been through?"},
+    {min:12, q:"What are you carrying that feels too heavy?"},
+    {min:12, q:"What is an apology you are still waiting for, or still owe?"},
+    {min:12, q:"What do you think love actually is?"},
+    {min:12, q:"When have you disappointed yourself?"},
+    {min:12, q:"What is the kindest thing you could do for someone that costs nothing?"},
+    {min:12, q:"What is a decision you made that changed who you are?"},
+    {min:12, q:"When was the last time you cried, and do you know why?"},
+    {min:12, q:"What have you never said out loud?"},
+    {min:12, q:"What are you proud of that you have never told anyone?"},
+    {min:12, q:"What do you think actually happens when someone forgives you?"},
+    {min:12, q:"What did you do that you have not stopped feeling bad about?"},
+    {min:12, q:"Who have you hurt without meaning to?"},
+    {min:12, q:"What is a version of yourself you are scared of becoming?"},
+    {min:12, q:"What do you need that you have never asked for?"},
+    {min:12, q:"When did you last feel genuinely safe?"},
+    {min:12, q:"What would you change about the way you are being raised?"},
+    {min:12, q:"What do you think you got from me that you did not want?"},
+    {min:12, q:"What do you believe that you have never actually tested?"},
+    {min:12, q:"When have you been the person someone else needed?"},
+    {min:12, q:"What would you not want anyone to read about you?"},
+    {min:13, q:"What is a part of yourself you hide, and who do you hide it from?"},
+    {min:13, q:"What do you think you are running from?"},
+    {min:13, q:"What are you grieving right now, even if it is not a person?"},
+    {min:13, q:"What would you do differently if you knew nobody would judge you for it?"},
+    {min:13, q:"What is a truth about yourself you accepted only recently?"},
+    {min:13, q:"Who would you want to hear from before you die?"},
+    {min:13, q:"Tell the story of your life so far in three sentences."},
+    {min:13, q:"What do you think you owe the people who raised you?"},
+    {min:13, q:"What would you want to be forgiven for?"},
+    {min:13, q:"What are you avoiding right now, and what is it costing you?"}
+  ]},
+
+  dare: { name:"Dare", color:"#1E1C18", cards:[
+    {min:4, q:"Tell everyone one thing you like about the person on your left."},
+    {min:4, q:"Do your best impression of someone else at this table. No guessing needed. We all know."},
+    {min:4, q:"Give the longest hug you can stand."},
+    {min:4, q:"Teach everyone something you know how to do, in under sixty seconds."},
+    {min:4, q:"Everyone makes their scariest face at the same time. First one to laugh draws next."},
+    {min:4, q:"Say one thing you are grateful for. It cannot be a person."},
+    {min:4, q:"Pick a song and get everyone to sing one line of it."},
+    {min:4, q:"Give someone here a brand new nickname. It sticks for the rest of the game."},
+    {min:4, q:"High five the person across from you and tell them one nice thing."},
+    {min:4, q:"Point at something in this room and tell the story of how it got here."},
+    {min:7, q:"Thank someone here for something they will be surprised you noticed."},
+    {min:7, q:"Swap seats with someone and answer the next card as if you were them."},
+    {min:7, q:"Everyone writes one word for how tonight feels. Read them all at the same time."},
+    {min:7, q:"Look at someone here for ten seconds without talking or laughing. Good luck."},
+    {min:7, q:"Everyone names one thing they want this family to do more of. Pick one and put it on the calendar tonight."},
+    {min:7, q:"Keep this card. You can use it to skip any one card for the rest of the game."},
+    {min:7, q:"Tell a story about someone at this table that they have never heard."},
+    {min:7, q:"Everyone puts their phone in the middle of the table until the deck runs out."},
+    {min:7, q:"Trade one thing you are wearing with the person next to you. Keep it on until the game ends."},
+    {min:7, q:"Say something true about the youngest person here that they do not know about themselves."},
+    {min:7, q:"Everyone names the best thing that happened to them this month. One sentence, no explaining."},
+    {min:7, q:"You pick the next card and hand it to whoever you want to answer it."},
+    {min:10, q:"Tell someone here something you have never thanked them for."},
+    {min:10, q:"Ask the person on your right any question you want. They have to answer it."},
+    {min:10, q:"Say one thing you are sorry for. No explaining afterward."},
+    {min:10, q:"Everyone says one thing they are looking forward to. Oldest person goes last."},
+    {min:10, q:"Tell the table something you were wrong about."},
+    {min:10, q:"Everyone says one thing they admire about the person who drew this card."},
+    {min:10, q:"Say out loud something you have been meaning to say to someone here."},
+    {min:10, q:"Pick anyone here and let them ask you three questions in a row."}
+  ]},
+
+  embers: { name:"Embers", color:"#1F4230", cards:[
+    {min:18, q:"If you walked into a room holding everyone you have ever met, who do you look for first?"},
+    {min:18, q:"What version of yourself did you have to leave behind to become this one?"},
+    {min:18, q:"Who would be most surprised by who you turned out to be?"},
+    {min:18, q:"What do people consistently misread about you?"},
+    {min:18, q:"When did you last do something purely because you wanted to, with nobody watching?"},
+    {min:18, q:"Which of your parents' habits do you catch yourself repeating?"},
+    {min:18, q:"What would you do with a year if it did not count against anything?"},
+    {min:18, q:"Who have you let go of that you still think about?"},
+    {min:18, q:"What is a compliment you cannot accept?"},
+    {min:18, q:"What did you want at twenty that you would turn down now?"},
+    {min:18, q:"What are you still trying to prove, and who are you proving it to?"},
+    {min:18, q:"Whose approval are you still working for, even if they are gone?"},
+    {min:18, q:"When were you loneliest in a room full of people?"},
+    {min:18, q:"What have you outgrown but not let go of?"},
+    {min:18, q:"What have you done that you have never fully explained to anyone?"},
+    {min:18, q:"What would the person you were ten years ago think of the life you built?"},
+    {min:18, q:"What is the kindest thing anyone did for you that they probably do not remember?"},
+    {min:18, q:"What are you tolerating that you should not be?"},
+    {min:18, q:"What will the people closest to you say about you when you are not in the room?"},
+    {min:18, q:"What is the conversation you keep almost having?"},
+    {min:18, q:"Which relationship in your life is running on habit instead of choice?"},
+    {min:18, q:"What is a risk you did not take, and do you still know why?"},
+    {min:18, q:"When did you last change your mind about something that cost you to change?"},
+    {min:18, q:"What do you do well that you only learned in order to survive something?"},
+    {min:18, q:"What do you want to be true at your funeral that is not true yet?"},
+    {min:18, q:"What part of your life would you not choose again, and would you still keep it?"},
+    {min:18, q:"Who owes you nothing, but you are still keeping score with them?"},
+    {min:18, q:"What are you most afraid people will find out you got by luck rather than effort?"},
+    {min:18, q:"What is a story you tell about yourself that you have started to doubt?"},
+    {min:18, q:"If you had to give up being understood or being loved, which one goes?"},
+    {min:18, q:"What is the last decision you made out of fear and called something else?"},
+    {min:18, q:"Who did you become for someone else, and did you ever come back?"},
+    {min:18, q:"What is the thing about parenting nobody warned you about?"},
+    {min:18, q:"What will our kids have to unlearn from us?"},
+    {min:18, q:"When did you last feel like a team with me instead of two people managing a household?"},
+    {min:18, q:"What do you miss about who we were before?"},
+    {min:18, q:"What do I do that you have never told me bothers you?"},
+    {min:18, q:"What do I do that you have never told me you love?"},
+    {min:18, q:"What would you want more of if logistics were not part of the answer?"},
+    {min:18, q:"When did you last feel genuinely chosen?"},
+    {min:18, q:"What did you give up that you have never fully mourned?"},
+    {min:18, q:"What are you teaching by example that you would never say out loud?"},
+    {min:18, q:"What would you want said to you on your hardest day?"},
+    {min:18, q:"What are you pretending not to know?"},
+    {min:18, q:"What is a promise you made to yourself that you broke?"},
+    {min:18, q:"Who are you jealous of, and what does that tell you?"},
+    {min:18, q:"What is a room in your memory you would walk back into?"},
+    {min:18, q:"What did your childhood teach you that you are still trying to correct?"},
+    {min:18, q:"What do you think you deserve that you have never asked for?"},
+    {min:18, q:"What would you do if you knew this was the last decade you would be strong?"},
+    {min:18, q:"What truth have you avoided because acting on it would cost too much?"},
+    {min:18, q:"When did you last surprise yourself?"},
+    {min:18, q:"What is the difference between the life you have and the life you describe to other people?"},
+    {min:18, q:"What have you never let anyone take care of for you?"},
+    {min:18, q:"Who do you need to call?"},
+    {min:18, q:"What would you want your kids to find out about you only when they are older?"},
+    {min:18, q:"What is a fight we keep having that is actually about something else?"},
+    {min:18, q:"What are you afraid will happen if you slow down?"},
+    {min:18, q:"What is the best thing that came out of the worst year you have had?"},
+    {min:18, q:"You get one hour with someone who is gone. Who, and what do you ask?"}
+  ]}
+};
+
+const LEVEL_KEYS = ["spark","kindling","bonfire","dare","embers"];
+const ADULT_ONLY = "embers";
+const AGES = [{v:4,l:"4+"},{v:7,l:"7+"},{v:10,l:"10+"},{v:13,l:"13+"},{v:18,l:"Adults"}];
+const LEVEL_BLURB = {
+  spark:"Easy, funny, no stakes. Good for a car ride or a five year old.",
+  kindling:"Real opinions and real memories. Where most of a good dinner lands.",
+  bonfire:"The ones you would normally avoid. Save these for when there is time.",
+  dare:"Do something instead of saying something. They break tension fast.",
+  embers:"Adults only. Nothing explicit, but nothing easy either. For the two people the rest of this is built on."
+};
+
+/* ── storage: never let a blocked/absent localStorage break the game ── */
+const KEY = "rc.campfire.v1";
+const Store = (() => {
+  let ok = true;
+  try { const t="__t"; localStorage.setItem(t,t); localStorage.removeItem(t); }
+  catch(e){ ok = false; }
+  let mem = null;
+  return {
+    ok,
+    read(){
+      if(!ok) return mem || {};
+      try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ return {}; }
+    },
+    write(o){
+      if(!ok){ mem = o; return; }
+      try { localStorage.setItem(KEY, JSON.stringify(o)); } catch(e){ ok=false; mem=o; }
+    }
+  };
+})();
+
+/* ── stable id from question text, survives reordering and JSON merges ── */
+function cid(q){
+  let h = 5381;
+  for(let i=0;i<q.length;i++){ h = ((h<<5)+h+q.charCodeAt(i))>>>0; }
+  return h.toString(36);
+}
+
+/* ── flatten deck once, index by id ── */
+const ALL = [];
+const BY_ID = new Map();
+function ingest(lvl, card, source){
+  if(!card || typeof card.q !== "string" || !card.q.trim()) return;
+  const min = Number(card.min);
+  const c = { id: cid(card.q), q: card.q.trim(), min: Number.isFinite(min) ? min : 18, lvl, source };
+  if(BY_ID.has(c.id)) return;
+  BY_ID.set(c.id, c);
+  ALL.push(c);
+}
+LEVEL_KEYS.forEach(k => DECK[k].cards.forEach(c => ingest(k, c, "base")));
+const BASE_COUNT = ALL.length;
+
+/* ── state ── */
+const saved = Store.read();
+let state = {
+  age: AGES.some(a=>a.v===saved.age) ? saved.age : 7,
+  active: new Set(Array.isArray(saved.active) && saved.active.length
+    ? saved.active.filter(k=>LEVEL_KEYS.includes(k)) : ["spark","kindling"]),
+  seen: new Set(Array.isArray(saved.seen) ? saved.seen : []),
+  fav: new Set(Array.isArray(saved.fav) ? saved.fav : []),
+  retired: new Set(Array.isArray(saved.retired) ? saved.retired : []),
+  favOnly: false,
+  pile: [], drawn: 0, total: 0, current: null
+};
+if(!state.active.size) state.active.add("spark");
+if(state.age < 18) state.active.delete(ADULT_ONLY);
+
+function persist(){
+  Store.write({
+    age: state.age,
+    active: [...state.active],
+    seen: [...state.seen],
+    fav: [...state.fav],
+    retired: [...state.retired]
+  });
+}
+
+const $ = id => document.getElementById(id);
+const cardEl = $("card"), deckEl = $("deck");
+
+/* ── controls ── */
+AGES.forEach(a=>{
+  const b=document.createElement("button");
+  b.type="button"; b.textContent=a.l; b.dataset.age=a.v;
+  b.addEventListener("click",()=>{
+    state.age=a.v;
+    if(state.age<18) state.active.delete(ADULT_ONLY);
+    if(!state.active.size) state.active.add("spark");
+    syncAges(); syncLevels(); persist(); reshuffle();
+  });
+  $("ages").appendChild(b);
+});
+function syncAges(){
+  [...$("ages").children].forEach(b=>b.setAttribute("aria-pressed", +b.dataset.age===state.age));
+}
+
+LEVEL_KEYS.forEach(k=>{
+  const b=document.createElement("button");
+  b.type="button"; b.className="lvl"; b.textContent=DECK[k].name; b.dataset.lvl=k;
+  b.style.setProperty("--c", DECK[k].color);
+  b.addEventListener("click",()=>{
+    if(state.active.has(k)){ if(state.active.size===1) return; state.active.delete(k); }
+    else state.active.add(k);
+    state.favOnly=false; syncLevels(); persist(); reshuffle();
+  });
+  $("levels").appendChild(b);
+});
+function syncLevels(){
+  [...$("levels").children].forEach(b=>{
+    const adult = b.dataset.lvl===ADULT_ONLY;
+    b.disabled = adult && state.age<18;
+    b.title = b.disabled ? "Set the table to Adults to unlock Embers" : "";
+    b.setAttribute("aria-pressed", state.active.has(b.dataset.lvl) && !state.favOnly);
+  });
+  $("adult-note").classList.toggle("on", state.age>=18);
+}
+
+/* legend, counts come from the live deck so JSON additions show up */
+function renderLegend(){
+  const box=$("lvl-legend"); box.innerHTML="";
+  LEVEL_KEYS.forEach(k=>{
+    const n = ALL.filter(c=>c.lvl===k).length;
+    const d=document.createElement("div");
+    d.className="lvl-card"; d.style.setProperty("--c", DECK[k].color);
+    d.innerHTML = `<h3>${DECK[k].name}</h3><span class="count">${n} cards</span><p>${LEVEL_BLURB[k]}</p>`;
+    box.appendChild(d);
+  });
+}
+
+/* ── deck logic ── */
+function eligible(){
+  return ALL.filter(c =>
+    !state.retired.has(c.id) &&
+    (state.favOnly ? state.fav.has(c.id)
+                   : (state.active.has(c.lvl) && c.min <= state.age))
+  );
+}
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+function reshuffle(){
+  const pool = eligible();
+  const fresh = shuffle(pool.filter(c=>!state.seen.has(c.id)));
+  const again = shuffle(pool.filter(c=>state.seen.has(c.id)));
+  state.pile = [...again, ...fresh];   // popped from the end, so unseen come first
+  state.total = state.pile.length;
+  state.drawn = 0; state.current = null;
+  render({idle:true});
+}
+
+function draw(){
+  if(!state.pile.length){ state.current=null; render({done:true}); return; }
+  const c = state.pile.pop();
+  state.drawn++;
+  state.seen.add(c.id);
+  state.current = c;
+  persist();
+  render({card:c});
+}
+
+function render(opt){
+  cardEl.className="card"; deckEl.className="deck";
+  const q=$("c-q"), lvl=$("c-lvl"), age=$("c-age"), foot=$("c-foot");
+
+  if(opt.idle){
+    cardEl.classList.add("idle");
+    cardEl.style.setProperty("--c","#7A7060");
+    lvl.textContent = state.favOnly ? "Saved cards" : "Ready";
+    age.textContent=""; foot.textContent="";
+    q.textContent = state.total
+      ? "Shuffled and ready. Draw when everyone is at the table."
+      : (state.favOnly ? "You have not saved any cards yet."
+                       : "No cards match those settings. Turn on another level.");
+  } else if(opt.done){
+    cardEl.classList.add("done"); deckEl.classList.add("empty");
+    cardEl.style.setProperty("--c","#7A7060");
+    lvl.textContent="Deck empty"; age.textContent=""; foot.textContent="";
+    q.textContent="That is the whole deck. Reshuffle, or move up a level.";
+  } else {
+    const c=opt.card, meta=DECK[c.lvl];
+    cardEl.style.setProperty("--c", meta.color);
+    if(c.lvl==="dare"||c.lvl==="embers"){ cardEl.classList.add(c.lvl); deckEl.classList.add(c.lvl); }
+    if(!state.pile.length) deckEl.classList.add("empty");
+    cardEl.classList.add("dealt");
+    lvl.textContent=meta.name;
+    age.textContent = c.min>=18 ? "Adults" : c.min+"+";
+    q.textContent=c.q;
+    foot.textContent = c.lvl==="dare" ? "Everyone does it"
+      : c.lvl==="embers" ? "Answer it yourself before you ask it"
+      : "Whoever drew it answers first";
+  }
+  syncTools();
+  syncMeters();
+}
+
+function syncTools(){
+  const c=state.current;
+  $("t-save").setAttribute("aria-pressed", !!(c && state.fav.has(c.id)));
+  $("t-save").textContent = c && state.fav.has(c.id) ? "Saved" : "Save";
+  $("t-save").disabled = !c;
+  $("t-retire").disabled = !c;
+}
+
+function syncMeters(){
+  $("m-left").textContent = state.pile.length + (state.pile.length===1?" card left":" cards left");
+  $("m-drawn").textContent = state.drawn + " of " + state.total + " drawn";
+  $("bar").style.width = state.total ? (state.drawn/state.total*100)+"%" : "0%";
+  $("draw").disabled = !state.total;
+  $("draw").textContent = state.drawn ? "Next card" : "Draw a card";
+
+  const f=$("fav-only");
+  f.textContent = "Saved (" + state.fav.size + ")";
+  f.disabled = !state.fav.size;
+  f.setAttribute("aria-pressed", state.favOnly);
+  $("seen-stat").textContent = state.seen.size + " of " + ALL.length + " seen";
+  $("forget").disabled = !(state.seen.size || state.fav.size || state.retired.size);
+}
+
+/* ── card tools ── */
+$("t-save").addEventListener("click",()=>{
+  const c=state.current; if(!c) return;
+  state.fav.has(c.id) ? state.fav.delete(c.id) : state.fav.add(c.id);
+  persist(); syncTools(); syncMeters();
+});
+$("t-retire").addEventListener("click",()=>{
+  const c=state.current; if(!c) return;
+  state.retired.add(c.id); state.fav.delete(c.id);
+  state.pile = state.pile.filter(x=>x.id!==c.id);
+  state.total = Math.max(state.total-1, state.drawn);
+  persist();
+  draw();
+});
+
+$("fav-only").addEventListener("click",()=>{
+  state.favOnly=!state.favOnly; syncLevels(); reshuffle();
+});
+$("forget").addEventListener("click",()=>{
+  if(!confirm("Clear every drawn, saved, and retired card on this device?")) return;
+  state.seen.clear(); state.fav.clear(); state.retired.clear(); state.favOnly=false;
+  persist(); syncLevels(); reshuffle();
+});
+
+$("draw").addEventListener("click",draw);
+$("shuffle").addEventListener("click",()=>{ reshuffle(); });
+document.addEventListener("keydown",e=>{
+  if(e.target.tagName==="BUTTON" && (e.code==="Space"||e.code==="Enter")) return;
+  if(e.code==="Space"||e.code==="ArrowRight"){ e.preventDefault(); draw(); }
+});
+
+/* ── optional nightly additions ── */
+async function loadExtras(){
+  try{
+    const r = await fetch("data/campfire-cards.json", {cache:"no-cache"});
+    if(!r.ok) return;
+    const j = await r.json();
+    const before = ALL.length;
+    LEVEL_KEYS.forEach(k=>{ (Array.isArray(j[k]) ? j[k] : []).forEach(c=>ingest(k,c,"nightly")); });
+    if(ALL.length > before){
+      renderLegend();
+      const idle = cardEl.classList.contains("idle");
+      if(idle) reshuffle(); else syncMeters();
+    }
+  }catch(e){ /* base deck is the product; extras are a bonus */ }
+}
+
+/* ── boot ── */
+syncAges(); syncLevels(); renderLegend(); reshuffle(); loadExtras();
+</script>
+</body>
+</html>
