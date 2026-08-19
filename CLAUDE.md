@@ -1,14 +1,16 @@
 # Campfire (campfire.raisedcurious.com)
 
-Conversation card deck for families: 265 questions and dares across five
-levels (Spark, Kindling, Bonfire, Dares, Embers). Static single-page site,
-localStorage-based memory, no backend.
+Conversation card deck for families: 305 questions and dares across six
+levels (Spark, Kindling, Bonfire, Roast, Dares, Embers). Static single-page
+site, localStorage-based memory, no backend.
 
 ## Deploy
-Cloudflare Pages. IMPORTANT current state: the live site is a DIRECT UPLOAD
-Pages project, so pushing to this repo does NOT deploy yet. After the
-migration to a Git-connected Pages project, push-to-main deploys. Check with
-Matt which state applies before assuming a push went live.
+Cloudflare Pages, Git-connected as of 2026-08-19: push to main and the
+`campfire-git` project builds and serves campfire.raisedcurious.com. The
+migration is done; the old DIRECT UPLOAD project `campfire`
+(campfire-3tb.pages.dev) is an orphan with no custom domain attached, so
+never deploy to it. Verify a push went live with
+`wrangler pages deployment list --project-name campfire-git`.
 
 ## HARD RULES
 1. data/campfire-cards.json is the append target for a nightly card pipeline:
