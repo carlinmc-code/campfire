@@ -12,6 +12,22 @@ migration is done; the old DIRECT UPLOAD project `campfire`
 never deploy to it. Verify a push went live with
 `wrangler pages deployment list --project-name campfire-git`.
 
+## Nightly pipeline
+`.github/workflows/nightly.yml` runs `scripts/campfire.js` at 07:00 UTC and
+appends a few cards to data/campfire-cards.json, then pushes (which deploys).
+Requires the ANTHROPIC_API_KEY repo secret.
+
+- Level rotation by UTC day: Sun Spark, Mon Kindling, Tue Bonfire, Wed Roast,
+  Thu Dare, Fri Embers, Sat Roast (Roast twice — newest and smallest level).
+- The age gate is enforced twice: the per-level legal `min` set is an enum in
+  the JSON schema sent to the model, and re-checked on the response. Embers
+  can only ever emit 18. Widening `LEVELS[*].mins` weakens a safety feature.
+- Duplicates are checked against the base deck parsed out of index.html plus
+  everything previous runs appended, so the script needs both files present.
+- A malformed data/campfire-cards.json aborts the run instead of being
+  regenerated. Run `npm run cards:dry` (or `--dry-run`) to plan a run without
+  calling the API, writing files, or needing the SDK installed.
+
 ## HARD RULES
 1. data/campfire-cards.json is the append target for a nightly card pipeline:
    any additions must match the existing card schema exactly, and the file

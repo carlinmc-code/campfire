@@ -1,0 +1,13 @@
+{
+  "name": "campfire-cards",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Nightly card generator for campfire.raisedcurious.com",
+  "scripts": {
+    "cards": "node scripts/campfire.js",
+    "cards:dry": "node scripts/campfire.js --dry-run"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.119.0"
+  }
+}

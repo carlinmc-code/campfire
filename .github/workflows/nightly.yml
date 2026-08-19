@@ -1,0 +1,80 @@
+# ─────────────────────────────────────────────────────────────
+# Campfire — nightly card pipeline
+# Runs 3am ET (7am UTC), an hour after the flagship RaisedCurious
+# run so the two never contend. Generates a few cards via the
+# Claude API, appends them to data/campfire-cards.json, commits,
+# and pushes. campfire.raisedcurious.com is a Git-connected
+# Cloudflare Pages project, so the push is the deploy.
+#
+# Level rotation (day-of-week logic lives in scripts/campfire.js):
+#   Sun → Spark      Mon → Kindling   Tue → Bonfire
+#   Wed → Roast      Thu → Dare       Fri → Embers
+#   Sat → Roast      (newest level, so it runs twice)
+#
+# The base deck is embedded in index.html and ships without this
+# file; if a run fails or writes nothing, the site is unaffected.
+# ─────────────────────────────────────────────────────────────
+name: Nightly Cards
+
+on:
+  schedule:
+    - cron: '0 7 * * *'   # 3am ET (7am UTC) daily
+  workflow_dispatch:      # manual trigger from the Actions tab
+    inputs:
+      level:
+        description: 'Level to top up (blank = tonight per the rotation)'
+        required: false
+        type: choice
+        options: ['', spark, kindling, bonfire, roast, dare, embers]
+      dry_run:
+        description: 'Plan the run without calling the API or writing files'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  cards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install deps
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Generate cards
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.level }}" ]; then ARGS="$ARGS --level=${{ inputs.level }}"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/campfire.js $ARGS
+
+      - name: Commit & push
+        run: |
+          git config user.name "Campfire Bot"
+          git config user.email "bot@raisedcurious.com"
+          git add data/campfire-cards.json
+          if git diff --staged --quiet; then
+            echo "No new cards — nothing to commit."
+          else
+            git commit -m "Nightly: new Campfire cards"
+            git push origin main
+            echo "Pushed. Cloudflare Pages will deploy campfire.raisedcurious.com."
+          fi
