@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Campfire — Conversation Cards for Families | RaisedCurious</title>
-<meta name="description" content="A free conversation card deck for families. 265 questions and dares across five levels, from easy warm-ups to the ones adults avoid. No signup, no cost.">
+<meta name="description" content="A free conversation card deck for families. 305 questions and dares across six levels, from easy warm-ups to the ones adults avoid. No signup, no cost.">
 <meta property="og:title" content="Campfire — Conversation Cards for Families">
-<meta property="og:description" content="265 questions and dares across five levels. Set the age of your youngest player and start drawing.">
+<meta property="og:description" content="305 questions and dares across six levels. Set the age of your youngest player and start drawing.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://campfire.raisedcurious.com/">
 <link rel="canonical" href="https://campfire.raisedcurious.com/">
@@ -476,6 +476,49 @@ const DECK = {
     {min:13, q:"What are you avoiding right now, and what is it costing you?"}
   ]},
 
+  roast: { name:"Roast", color:"#C4703A", cards:[
+    {min:4, q:"If this family was a pack of animals, what animal is each person?"},
+    {min:4, q:"Who has the worst singing voice in this family, and who thinks they have the best?"},
+    {min:4, q:"Who in this family would lose at hide and seek the fastest, and where would they hide?"},
+    {min:4, q:"If everyone here swapped voices for one day, whose voice would be funniest coming out of you?"},
+    {min:4, q:"What food would each person here turn into if a witch cursed them?"},
+    {min:4, q:"Who is most likely to trip over absolutely nothing?"},
+    {min:4, q:"If this family had a theme song that played every time we walked into a room, what is it?"},
+    {min:4, q:"Who gives the best hugs in this family, and who gives the strangest?"},
+    {min:7, q:"Hollywood is making a film about this family. Who plays each of us?"},
+    {min:7, q:"This family is on a reality TV show. Who gets voted off first, and why?"},
+    {min:7, q:"If each person here came with a warning label, what would yours say?"},
+    {min:7, q:"This family enters a talent show tonight with no practice. What is the act, and how badly does it go?"},
+    {min:7, q:"Who in this family would get us lost, and who would refuse to admit we were lost?"},
+    {min:7, q:"Who is most likely to eat something that fell on the floor?"},
+    {min:7, q:"If we got a pet dragon tomorrow, who is in charge of it and who does it eat first?"},
+    {min:7, q:"What is the most embarrassing thing a grown up in this family does in public?"},
+    {min:7, q:"If this family opened a restaurant, what is it called and what goes wrong first?"},
+    {min:7, q:"Who talks the most in this family, and who would argue that it is not them?"},
+    {min:7, q:"Who here would be the worst at keeping a surprise party secret?"},
+    {min:7, q:"If we all had to wear one outfit for a year, who picks it and who suffers most?"},
+    {min:10, q:"This family is in a heist movie. What is everyone's job?"},
+    {min:10, q:"Who in this family would crack first if we were all being questioned separately?"},
+    {min:10, q:"If this family had to survive a week in the wilderness, who is the first liability?"},
+    {min:10, q:"Rank this family by who would win a fight with a goose."},
+    {min:10, q:"Who is most likely to fall for an obvious scam, and who is most likely to run one?"},
+    {min:10, q:"This family is a group project. Who does all the work, and who puts their name on it?"},
+    {min:10, q:"If a documentary crew followed this family for a month, what is the scandal they find?"},
+    {min:10, q:"Who here would last longest on a desert island, and who is gone by lunch?"},
+    {min:10, q:"If each of us had a villain origin story, what is the moment that tips you over?"},
+    {min:10, q:"Who in this family would be the worst person to share a hotel room with, and be honest?"},
+    {min:10, q:"If we entered a family game show, which one of us costs us the prize money?"},
+    {min:10, q:"Who is most likely to become famous on the internet for something humiliating?"},
+    {min:13, q:"If you had to hide a body, who in this family are you calling, and why that person?"},
+    {min:13, q:"Who here would sell the rest of us out first, and what is their price?"},
+    {min:13, q:"If each of us wrote a tell all book about this family, whose would sell the most copies?"},
+    {min:13, q:"Who would be the worst person in this family to be handcuffed to for twenty four hours?"},
+    {min:13, q:"This family is on trial. Who is the worst possible witness for our side?"},
+    {min:13, q:"If aliens demanded one member of this family, who goes, and how long does the argument take?"},
+    {min:13, q:"Who in this family gives the most confident advice about things they know nothing about?"},
+    {min:13, q:"Whose funeral in this family would have the most surprising person show up, and who is it?"}
+  ]},
+
   dare: { name:"Dare", color:"#1E1C18", cards:[
     {min:4, q:"Tell everyone one thing you like about the person on your left."},
     {min:4, q:"Do your best impression of someone else at this table. No guessing needed. We all know."},
@@ -573,13 +616,14 @@ const DECK = {
   ]}
 };
 
-const LEVEL_KEYS = ["spark","kindling","bonfire","dare","embers"];
+const LEVEL_KEYS = ["spark","kindling","bonfire","roast","dare","embers"];
 const ADULT_ONLY = "embers";
 const AGES = [{v:4,l:"4+"},{v:7,l:"7+"},{v:10,l:"10+"},{v:13,l:"13+"},{v:18,l:"Adults"}];
 const LEVEL_BLURB = {
   spark:"Easy, funny, no stakes. Good for a car ride or a five year old.",
   kindling:"Real opinions and real memories. Where most of a good dinner lands.",
   bonfire:"The ones you would normally avoid. Save these for when there is time.",
+  roast:"Ridiculous hypotheticals and loving slander. Nobody learns anything and that is the point.",
   dare:"Do something instead of saying something. They break tension fast.",
   embers:"Adults only. Nothing explicit, but nothing easy either. For the two people the rest of this is built on."
 };
