@@ -1,8 +1,9 @@
 # Campfire (campfire.raisedcurious.com)
 
-Conversation card deck for families: 305 questions and dares across six
+Conversation card deck for families: 505 questions and dares across six
 levels (Spark, Kindling, Bonfire, Roast, Dares, Embers). Static single-page
-site, localStorage-based memory, no backend.
+site, localStorage-based memory, no backend. Roast is by far the largest
+level at 240 cards; the others run 30-60.
 
 ## Deploy
 Cloudflare Pages, Git-connected as of 2026-08-19: push to main and the
