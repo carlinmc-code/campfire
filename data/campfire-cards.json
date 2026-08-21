@@ -1,6 +1,6 @@
 {
   "_readme": "Optional additions to the Campfire deck. The 265-card base deck is embedded in games/campfire.html and ships without this file. Written by scripts/campfire.js on the nightly cron. Safe to delete, empty, or break — the page falls back to the base deck silently. Schema: each level array holds {min, q}. min is the youngest age the card is written for (4, 7, 10, 12, 13, or 18). Duplicate question text is rejected client-side.",
-  "_updated": "2026-08-20",
+  "_updated": "2026-08-21",
   "spark": [],
   "kindling": [],
   "bonfire": [],
@@ -18,5 +18,18 @@
       "q": "Describe your whole day today using only sounds, and let the table guess what happened."
     }
   ],
-  "embers": []
+  "embers": [
+    {
+      "min": 18,
+      "q": "What do you need from me that you have stopped asking for because I did not deliver the first few times?"
+    },
+    {
+      "min": 18,
+      "q": "When the kids are grown and gone, what do you hope is still between us?"
+    },
+    {
+      "min": 18,
+      "q": "What part of your day do you look forward to that has nothing to do with anyone in this house?"
+    }
+  ]
 }
