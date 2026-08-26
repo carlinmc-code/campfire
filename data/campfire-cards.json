@@ -1,6 +1,6 @@
 {
   "_readme": "Optional additions to the Campfire deck. The 265-card base deck is embedded in games/campfire.html and ships without this file. Written by scripts/campfire.js on the nightly cron. Safe to delete, empty, or break — the page falls back to the base deck silently. Schema: each level array holds {min, q}. min is the youngest age the card is written for (4, 7, 10, 12, 13, or 18). Duplicate question text is rejected client-side.",
-  "_updated": "2026-08-25",
+  "_updated": "2026-08-26",
   "spark": [
     {
       "min": 4,
@@ -83,6 +83,18 @@
     {
       "min": 10,
       "q": "If this family were put in charge of a zoo for one day, who lets something out?"
+    },
+    {
+      "min": 4,
+      "q": "Who in this family would be the worst at sharing a bag of sweets, and who would hand out too many?"
+    },
+    {
+      "min": 7,
+      "q": "If this family discovered a new planet, whose name for it do we all quietly ignore?"
+    },
+    {
+      "min": 13,
+      "q": "Who here would be the worst person put in charge of a school trip full of teenagers, and what is the first thing to go wrong?"
     }
   ]
 }
