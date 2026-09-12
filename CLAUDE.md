@@ -29,6 +29,11 @@ Requires the ANTHROPIC_API_KEY repo secret.
   regenerated. Run `npm run cards:dry` (or `--dry-run`) to plan a run without
   calling the API, writing files, or needing the SDK installed.
 
+## Installing to a home screen
+Serves a manifest and its own icons (a fire over two crossed logs), so it can
+sit on a home screen next to the arcade. `node make-icons.js` regenerates them.
+Being a Pages site these are just files; nothing needs routing.
+
 ## HARD RULES
 1. data/campfire-cards.json is the append target for a nightly card pipeline:
    any additions must match the existing card schema exactly, and the file
