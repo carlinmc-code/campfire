@@ -1,6 +1,6 @@
 {
   "_readme": "Optional additions to the Campfire deck. The 265-card base deck is embedded in games/campfire.html and ships without this file. Written by scripts/campfire.js on the nightly cron. Safe to delete, empty, or break — the page falls back to the base deck silently. Schema: each level array holds {min, q}. min is the youngest age the card is written for (4, 7, 10, 12, 13, or 18). Duplicate question text is rejected client-side.",
-  "_updated": "2026-09-14",
+  "_updated": "2026-09-15",
   "spark": [
     {
       "min": 4,
@@ -137,6 +137,18 @@
     {
       "min": 10,
       "q": "What is something you are good at that you have started to resent being known for?"
+    },
+    {
+      "min": 13,
+      "q": "What is a story you tell about yourself that has slowly stopped being true?"
+    },
+    {
+      "min": 12,
+      "q": "Who in your life do you love but no longer trust, and how do you handle being around them?"
+    },
+    {
+      "min": 13,
+      "q": "What would you have to give up to become the person you say you want to be, and are you willing?"
     }
   ],
   "dare": [
